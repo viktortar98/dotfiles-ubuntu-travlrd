@@ -1,17 +1,43 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 ORG="${1:-travlrd-com}"
 TARGET_DIR="${2:-$HOME/gh}"
+PROTOCOL="${CLONE_ORG_REPOS_PROTOCOL:-ssh}"
 
-if ! command -v gh &>/dev/null; then
-  echo "Error: gh (GitHub CLI) is not installed"
+if ! command -v git >/dev/null 2>&1; then
+  echo "Error: git is not installed"
   exit 1
 fi
 
-if ! gh auth status &>/dev/null; then
-  echo "Error: Not authenticated with GitHub. Run 'gh auth login'"
+if ! command -v curl >/dev/null 2>&1; then
+  echo "Error: curl is not installed"
   exit 1
+fi
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo "Error: jq is not installed"
+  exit 1
+fi
+
+case "$PROTOCOL" in
+  ssh)
+    url_key="ssh_url"
+    ;;
+  https)
+    url_key="clone_url"
+    ;;
+  *)
+    echo "Error: CLONE_ORG_REPOS_PROTOCOL must be 'ssh' or 'https'"
+    exit 1
+    ;;
+esac
+
+auth_token="${GH_TOKEN:-${GITHUB_TOKEN:-}}"
+if [ -z "$auth_token" ] && command -v gh >/dev/null 2>&1; then
+  if gh auth status >/dev/null 2>&1; then
+    auth_token="$(gh auth token 2>/dev/null || true)"
+  fi
 fi
 
 mkdir -p "$TARGET_DIR"
@@ -20,26 +46,54 @@ echo "Fetching repos from org: $ORG"
 
 page=1
 while true; do
-  repos=$(gh api "orgs/$ORG/repos?per_page=100&page=$page" --jq '.[].full_name' 2>/dev/null) || true
-  
-  if [ -z "$repos" ]; then
+  api_url="https://api.github.com/orgs/$ORG/repos?type=all&per_page=100&page=$page"
+
+  curl_args=(--fail --silent --show-error -H "Accept: application/vnd.github+json")
+  if [ -n "$auth_token" ]; then
+    curl_args+=(-H "Authorization: Bearer $auth_token")
+  fi
+
+  response="$(curl "${curl_args[@]}" "$api_url")"
+
+  if ! jq -e 'type == "array"' >/dev/null 2>&1 <<< "$response"; then
+    api_message="$(jq -r '.message // "Unexpected GitHub API response"' <<< "$response" 2>/dev/null || true)"
+    echo "Error: failed to fetch repositories for '$ORG': $api_message"
+    exit 1
+  fi
+
+  repo_count="$(jq 'length' <<< "$response")"
+  if [ "$repo_count" -eq 0 ]; then
     break
   fi
-  
-  while IFS= read -r repo; do
-    [ -z "$repo" ] && continue
-    
+
+  mapfile -t repo_rows < <(jq -r --arg key "$url_key" '.[] | "\(.full_name)\t\(.[ $key ])"' <<< "$response")
+  for row in "${repo_rows[@]}"; do
+    [ -z "$row" ] && continue
+
+    repo="${row%%$'\t'*}"
+    repo_url="${row#*$'\t'}"
     repo_name="${repo##*/}"
     target_path="$TARGET_DIR/$repo_name"
-    
+
     if [ -d "$target_path" ]; then
       echo "[skip] $repo_name (already exists)"
-    else
-      echo "[clone] $repo_name"
-      gh repo clone "$repo" "$target_path" -- --quiet
+      continue
     fi
-  done <<< "$repos"
-  
+
+    if [ -z "$repo_url" ] || [ "$repo_url" = "null" ]; then
+      echo "Error: missing clone URL for '$repo'"
+      exit 1
+    fi
+
+    echo "[clone] $repo_name"
+    git clone --quiet "$repo_url" "$target_path"
+
+    if [ ! -d "$target_path/.git" ]; then
+      echo "Error: clone completed but '$target_path/.git' was not found"
+      exit 1
+    fi
+  done
+
   ((page++))
 done
 

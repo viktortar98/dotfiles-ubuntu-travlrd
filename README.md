@@ -42,7 +42,11 @@ cd ~/dotfiles
   ```bash
   clone-org-repos [org] [target-dir]
   # Example: clone-org-repos travlrd-com ~/gh
+
+  # Optional protocol (default: ssh)
+  CLONE_ORG_REPOS_PROTOCOL=https clone-org-repos travlrd-com ~/gh
   ```
+  Uses GitHub REST API + `git clone` directly. For private org repos, set `GH_TOKEN` or `GITHUB_TOKEN` (or use `gh auth login` so the script can reuse `gh auth token`).
 
 ### Project structure
 - `~/gh/`: Projects cloned from GitHub
