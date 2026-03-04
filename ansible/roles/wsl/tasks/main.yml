@@ -8,12 +8,19 @@
       - wslu
     state: present
 
-- name: Ensure /etc/wsl.conf sets systemd
+- name: Remove legacy dotfiles block from /etc/wsl.conf
   become: true
   ansible.builtin.blockinfile:
     path: /etc/wsl.conf
     create: true
     marker: "# {mark} DOTFILES WSL BLOCK"
-    block: |
-      [boot]
-      systemd=true
+    state: absent
+
+- name: Ensure /etc/wsl.conf sets systemd
+  become: true
+  ansible.builtin.ini_file:
+    path: /etc/wsl.conf
+    create: true
+    section: boot
+    option: systemd
+    value: "true"
