@@ -19,6 +19,7 @@ cd ~/dotfiles
 - **deno**: Secure JavaScript/TypeScript runtime
 - **pnpm**: Fast, disk space efficient package manager
 - **corepack**: Package manager version manager (built into Node)
+- **ni**: Unified package manager interface (works with npm/yarn/pnpm/bun)
 
 ### CLI utilities
 - **ripgrep (rg)**: Fast search
@@ -36,6 +37,17 @@ cd ~/dotfiles
 - **OpenJDK 17**: For Android development
 - **Git + gh**: Version control and GitHub CLI
 
+### Utility scripts
+- **clone-org-repos**: Clone all repos from a GitHub organization
+  ```bash
+  clone-org-repos [org] [target-dir]
+  # Example: clone-org-repos travlrd-com ~/gh
+  ```
+
+### Project structure
+- `~/gh/`: Projects cloned from GitHub
+- `~/dotfiles/`: This repository
+
 ## Configuration
 
 ### Node.js versioning
@@ -49,13 +61,23 @@ For project-level reproducibility, use `.nvmrc` or `.node-version` files in your
 
 ### Package manager selection
 
-Corepack automatically uses the correct package manager per project based on `packageManager` field in `package.json`:
+**Corepack** manages package manager versions per project based on `packageManager` field in `package.json`:
 
 ```json
 {
   "packageManager": "pnpm@10.17.0"
 }
 ```
+
+**ni** provides a unified interface across npm/yarn/pnpm/bun:
+
+```bash
+ni          # install (npm i, yarn, pnpm i, bun install)
+nr dev      # run scripts (npm run dev, yarn dev, pnpm dev, bun run dev)
+nx eslint   # execute commands (npx, yarn dlx, pnpm dlx, bunx)
+```
+
+Together: corepack ensures reproducibility, ni provides ergonomic commands.
 
 ## Keeping up to date
 

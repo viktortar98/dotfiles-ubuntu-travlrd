@@ -27,6 +27,8 @@ shell_managed_block: |
   export DENO_INSTALL="$HOME/.deno"
   export PATH="$DENO_INSTALL/bin:$PATH"
 
+  export PATH="$HOME/.local/bin:$PATH"
+
   export FNM_PATH="$HOME/.local/share/fnm"
   if [ -d "$FNM_PATH" ]; then
     export PATH="$FNM_PATH:$PATH"

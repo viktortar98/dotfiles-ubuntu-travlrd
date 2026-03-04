@@ -16,6 +16,7 @@ check_cmd rg
 check_cmd bun
 check_cmd fnm
 check_cmd deno
+check_cmd ni
 check_cmd java
 
 if ! command -v adb >/dev/null 2>&1 && [ -x "$HOME/.android/sdk/platform-tools/adb" ]; then
@@ -30,6 +31,7 @@ rg --version || true
 bun --version || true
 fnm --version || true
 deno --version || true
+ni --version || true
 java -version || true
 adb version || true
 

@@ -11,8 +11,14 @@
     marker: "# {mark} DOTFILES MANAGED BLOCK"
     block: "{{ shell_managed_block }}"
 
-- name: Ensure github workspace exists
+- name: Ensure gh workspace exists
   ansible.builtin.file:
-    path: "{{ dotfiles_home }}/github"
+    path: "{{ dotfiles_home }}/gh"
     state: directory
+    mode: "0755"
+
+- name: Copy utility scripts
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../config/bin/clone-org-repos"
+    dest: "{{ dotfiles_home }}/.local/bin/clone-org-repos"
     mode: "0755"

@@ -1,0 +1,46 @@
+#!/bin/bash
+set -e
+
+ORG="${1:-travlrd-com}"
+TARGET_DIR="${2:-$HOME/gh}"
+
+if ! command -v gh &>/dev/null; then
+  echo "Error: gh (GitHub CLI) is not installed"
+  exit 1
+fi
+
+if ! gh auth status &>/dev/null; then
+  echo "Error: Not authenticated with GitHub. Run 'gh auth login'"
+  exit 1
+fi
+
+mkdir -p "$TARGET_DIR"
+
+echo "Fetching repos from org: $ORG"
+
+page=1
+while true; do
+  repos=$(gh api "orgs/$ORG/repos?per_page=100&page=$page" --jq '.[].full_name' 2>/dev/null) || true
+  
+  if [ -z "$repos" ]; then
+    break
+  fi
+  
+  while IFS= read -r repo; do
+    [ -z "$repo" ] && continue
+    
+    repo_name="${repo##*/}"
+    target_path="$TARGET_DIR/$repo_name"
+    
+    if [ -d "$target_path" ]; then
+      echo "[skip] $repo_name (already exists)"
+    else
+      echo "[clone] $repo_name"
+      gh repo clone "$repo" "$target_path" -- --quiet
+    fi
+  done <<< "$repos"
+  
+  ((page++))
+done
+
+echo "Done!"

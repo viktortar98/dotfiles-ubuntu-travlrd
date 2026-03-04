@@ -69,3 +69,13 @@
   args:
     executable: /bin/bash
     creates: "{{ dotfiles_home }}/.deno/bin/deno"
+
+- name: Install ni (unified package manager interface)
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export BUN_INSTALL="{{ dotfiles_home }}/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
+    bun add -g @antfu/ni
+  args:
+    executable: /bin/bash
+  changed_when: false
