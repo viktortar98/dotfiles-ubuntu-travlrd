@@ -28,7 +28,7 @@ check_cmd git
 check_cmd rg
 check_cmd zoxide
 check_cmd fzf
-check_cmd bat
+check_cmd batcat
 check_cmd fdfind
 check_cmd jq
 check_cmd tldr
@@ -58,7 +58,7 @@ git --version || true
 rg --version || true
 zoxide --version || true
 fzf --version || true
-bat --version || true
+batcat --version || true
 fdfind --version || true
 jq --version || true
 tldr --version || true
