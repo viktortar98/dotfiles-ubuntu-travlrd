@@ -79,3 +79,13 @@
   args:
     executable: /bin/bash
   changed_when: false
+
+- name: Install Vercel CLI
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export BUN_INSTALL="{{ dotfiles_home }}/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
+    bun add -g vercel
+  args:
+    executable: /bin/bash
+  changed_when: false
