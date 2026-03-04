@@ -36,6 +36,7 @@ This file is the policy contract for AI agents editing this repo.
 - `bootstrap.sh` must remain the fresh-machine entrypoint.
 - `bootstrap.sh` installs required dependencies itself.
 - `verify.sh` validates critical tooling and expected environment state.
+- Running `./bootstrap.sh` is permitted without asking permission; its side effects are desirable.
 
 ## Agent Workflow
 
