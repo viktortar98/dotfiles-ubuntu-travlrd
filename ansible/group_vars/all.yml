@@ -39,6 +39,10 @@ shell_managed_block: |
     eval "$(zoxide init bash)"
   fi
 
+  if [[ $SHLVL -eq 1 && -d "$HOME/gh" ]]; then
+    cd ~/gh
+  fi
+
 git_user_name: "Viktor Tar"
 git_user_email: "viktortar98@gmail.com"
 
