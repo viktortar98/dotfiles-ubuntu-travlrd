@@ -36,7 +36,9 @@ This file is the policy contract for AI agents editing this repo.
 - `bootstrap.sh` must remain the fresh-machine entrypoint.
 - `bootstrap.sh` installs required dependencies itself.
 - `verify.sh` validates critical tooling and expected environment state.
+- When adding a new tool: update Ansible role AND `verify.sh`.
 - Run `./bootstrap.sh` after making changes that affect it. Since sudo may be required, ask the user to run it for you.
+- Run `./verify.sh` to confirm tools are installed correctly.
 
 ## Agent Workflow
 
