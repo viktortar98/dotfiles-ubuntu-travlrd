@@ -5,6 +5,7 @@
     name:
       - linux-tools-generic
       - usbutils
+      - wslu
     state: present
 
 - name: Ensure /etc/wsl.conf sets systemd
