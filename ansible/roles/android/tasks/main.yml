@@ -1,0 +1,72 @@
+---
+- name: Install Android and Java packages
+  become: true
+  ansible.builtin.apt:
+    name:
+      - openjdk-17-jdk
+      - openjdk-17-jre
+      - lib32stdc++6
+      - lib32z1
+      - unzip
+    state: present
+    update_cache: true
+
+- name: Ensure Android SDK directory exists
+  ansible.builtin.file:
+    path: "{{ android_sdk_root }}/cmdline-tools"
+    state: directory
+    mode: "0755"
+
+- name: Download Android command line tools
+  ansible.builtin.get_url:
+    url: "https://dl.google.com/android/repository/commandlinetools-linux-{{ android_cmdline_tools_version }}_latest.zip"
+    dest: "/tmp/android-cmdline-tools.zip"
+    mode: "0644"
+
+- name: Unarchive Android command line tools
+  ansible.builtin.unarchive:
+    src: "/tmp/android-cmdline-tools.zip"
+    dest: "{{ android_sdk_root }}/cmdline-tools"
+    remote_src: true
+    creates: "{{ android_sdk_root }}/cmdline-tools/latest"
+
+- name: Ensure command line tools live in latest directory
+  ansible.builtin.shell: |
+    set -euo pipefail
+    if [ -d "{{ android_sdk_root }}/cmdline-tools/cmdline-tools" ] && [ ! -d "{{ android_sdk_root }}/cmdline-tools/latest" ]; then
+      mv "{{ android_sdk_root }}/cmdline-tools/cmdline-tools" "{{ android_sdk_root }}/cmdline-tools/latest"
+    fi
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Ensure Android env vars in bashrc
+  ansible.builtin.blockinfile:
+    path: "{{ dotfiles_home }}/.bashrc"
+    marker: "# {mark} ANDROID DOTFILES BLOCK"
+    block: |
+      export ANDROID_HOME="{{ android_sdk_root }}"
+      export ANDROID_SDK_ROOT="{{ android_sdk_root }}"
+      export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+
+- name: Accept Android SDK licenses
+  ansible.builtin.shell: |
+    set -eu
+    yes | "{{ android_sdk_root }}/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null
+  args:
+    executable: /bin/bash
+  environment:
+    ANDROID_HOME: "{{ android_sdk_root }}"
+    ANDROID_SDK_ROOT: "{{ android_sdk_root }}"
+  changed_when: false
+
+- name: Install Android SDK packages
+  ansible.builtin.shell: |
+    set -euo pipefail
+    "{{ android_sdk_root }}/cmdline-tools/latest/bin/sdkmanager" {{ android_packages | map('quote') | join(' ') }}
+  args:
+    executable: /bin/bash
+  environment:
+    ANDROID_HOME: "{{ android_sdk_root }}"
+    ANDROID_SDK_ROOT: "{{ android_sdk_root }}"
+  changed_when: false

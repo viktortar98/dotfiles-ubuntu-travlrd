@@ -1,0 +1,53 @@
+---
+dotfiles_user: "{{ lookup('env', 'USER') }}"
+dotfiles_home: "{{ lookup('env', 'HOME') }}"
+
+apt_packages_base:
+  - ca-certificates
+  - curl
+  - git
+  - pipx
+  - python3-pip
+  - python3-venv
+  - ripgrep
+  - unzip
+  - zoxide
+  - fzf
+  - bat
+  - fd-find
+  - jq
+  - tldr
+  - htop
+
+shell_managed_block: |
+  # dotfiles managed block
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$BUN_INSTALL/bin:$PATH"
+
+  export DENO_INSTALL="$HOME/.deno"
+  export PATH="$DENO_INSTALL/bin:$PATH"
+
+  export FNM_PATH="$HOME/.local/share/fnm"
+  if [ -d "$FNM_PATH" ]; then
+    export PATH="$FNM_PATH:$PATH"
+    eval "$(fnm env --use-on-cd --shell bash)"
+  fi
+
+  if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init bash)"
+  fi
+
+git_user_name: "Viktor Tar"
+git_user_email: "viktortar98@gmail.com"
+
+node_lts: "lts"
+bun_version: "1.2.21"
+pnpm_version: "10.17.0"
+deno_version: "2.2.6"
+
+android_sdk_root: "{{ dotfiles_home }}/.android/sdk"
+android_cmdline_tools_version: "13114758"
+android_packages:
+  - "platform-tools"
+  - "platforms;android-35"
+  - "build-tools;35.0.0"

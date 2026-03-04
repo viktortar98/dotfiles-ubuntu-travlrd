@@ -1,0 +1,12 @@
+---
+- name: Ensure .agents directory exists
+  ansible.builtin.file:
+    path: "{{ dotfiles_home }}/.agents"
+    state: directory
+    mode: "0755"
+
+- name: Copy safe baseline agent config
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../config/agents/base-config.toml"
+    dest: "{{ dotfiles_home }}/.agents/base-config.toml"
+    mode: "0644"

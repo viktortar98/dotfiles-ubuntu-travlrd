@@ -1,0 +1,13 @@
+.DS_Store
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+credentials*
+ansible/.vault_pass
+config/secrets/
+**/local.override.*
+config/agents/private/

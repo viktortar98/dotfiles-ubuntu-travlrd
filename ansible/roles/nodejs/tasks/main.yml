@@ -1,0 +1,71 @@
+---
+- name: Ensure local bin directory exists
+  ansible.builtin.file:
+    path: "{{ dotfiles_home }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Install fnm
+  ansible.builtin.shell: |
+    set -euo pipefail
+    curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "{{ dotfiles_home }}/.local/share/fnm" --skip-shell
+  args:
+    creates: "{{ dotfiles_home }}/.local/share/fnm/fnm"
+
+- name: Install latest Node LTS with fnm
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export PATH="{{ dotfiles_home }}/.local/share/fnm:$PATH"
+    fnm install --lts
+    fnm default "lts/*"
+  args:
+    executable: /bin/bash
+  when: node_lts == "lts"
+  changed_when: false
+
+- name: Install configured Node version with fnm
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export PATH="{{ dotfiles_home }}/.local/share/fnm:$PATH"
+    fnm install {{ node_lts }}
+    fnm default {{ node_lts }}
+  args:
+    executable: /bin/bash
+  when: node_lts != "lts"
+  changed_when: false
+
+- name: Install bun pinned version
+  ansible.builtin.shell: |
+    set -euo pipefail
+    curl -fsSL https://bun.sh/install | bash -s -- bun-v{{ bun_version }}
+  args:
+    executable: /bin/bash
+    creates: "{{ dotfiles_home }}/.bun/bin/bun"
+
+- name: Install pnpm with bun
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export BUN_INSTALL="{{ dotfiles_home }}/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
+    bun add -g pnpm@{{ pnpm_version }}
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Enable corepack
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export PATH="{{ dotfiles_home }}/.local/share/fnm:$PATH"
+    eval "$(fnm env --shell bash)"
+    corepack enable
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Install deno
+  ansible.builtin.shell: |
+    set -euo pipefail
+    curl -fsSL https://deno.land/install.sh | sh -s -- v{{ deno_version }}
+  args:
+    executable: /bin/bash
+    creates: "{{ dotfiles_home }}/.deno/bin/deno"

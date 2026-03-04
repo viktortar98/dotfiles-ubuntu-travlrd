@@ -1,0 +1,7 @@
+---
+- name: Install base apt packages
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    name: "{{ apt_packages_base }}"
+    state: present

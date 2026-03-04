@@ -1,0 +1,18 @@
+---
+- name: Install WSL specific packages
+  become: true
+  ansible.builtin.apt:
+    name:
+      - linux-tools-generic
+      - usbutils
+    state: present
+
+- name: Ensure /etc/wsl.conf sets systemd
+  become: true
+  ansible.builtin.blockinfile:
+    path: /etc/wsl.conf
+    create: true
+    marker: "# {mark} DOTFILES WSL BLOCK"
+    block: |
+      [boot]
+      systemd=true

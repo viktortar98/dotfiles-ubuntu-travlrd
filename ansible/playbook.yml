@@ -1,0 +1,17 @@
+---
+- name: Configure workstation
+  hosts: local
+  become: false
+  gather_facts: true
+  roles:
+    - role: base
+    - role: agents
+    - role: shell
+    - role: git
+    - role: nodejs
+    - role: editors
+    - role: android
+    - role: wsl
+      when: ansible_facts['kernel'] is search('WSL')
+    - role: ubuntu_desktop
+      when: ansible_facts['kernel'] is not search('WSL')

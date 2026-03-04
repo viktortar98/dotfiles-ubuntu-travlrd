@@ -1,0 +1,8 @@
+---
+- name: Install desktop-only packages
+  become: true
+  ansible.builtin.apt:
+    name:
+      - gnome-tweaks
+      - fonts-firacode
+    state: present
