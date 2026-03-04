@@ -36,7 +36,7 @@ This file is the policy contract for AI agents editing this repo.
 - `bootstrap.sh` must remain the fresh-machine entrypoint.
 - `bootstrap.sh` installs required dependencies itself.
 - `verify.sh` validates critical tooling and expected environment state.
-- Running `./bootstrap.sh` is permitted without asking permission; its side effects are desirable. Ask the user to run it if sudo is required.
+- Run `./bootstrap.sh` after making changes that affect it. Since sudo may be required, ask the user to run it for you.
 
 ## Agent Workflow
 
