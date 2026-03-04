@@ -37,6 +37,7 @@ This file is the policy contract for AI agents editing this repo.
 - `bootstrap.sh` installs required dependencies itself.
 - `verify.sh` validates critical tooling and expected environment state.
 - When adding a new tool: update Ansible role AND `verify.sh`.
+- When modifying WSL config files (e.g., `.wslconfig`), copy the updated file to the Windows user home directory after changes.
 - Run `./bootstrap.sh` after making changes that affect it. Since sudo may be required, ask the user to run it for you.
 - Run `./verify.sh` to confirm tools are installed correctly.
 
