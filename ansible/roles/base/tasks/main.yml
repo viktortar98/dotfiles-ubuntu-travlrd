@@ -5,3 +5,23 @@
     update_cache: true
     name: "{{ apt_packages_base }}"
     state: present
+
+- name: Ensure local bin directory exists
+  ansible.builtin.file:
+    path: "{{ dotfiles_home }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Create bat symlink
+  ansible.builtin.file:
+    src: /usr/bin/batcat
+    dest: "{{ dotfiles_home }}/.local/bin/bat"
+    state: link
+    force: true
+
+- name: Create fd symlink
+  ansible.builtin.file:
+    src: /usr/bin/fdfind
+    dest: "{{ dotfiles_home }}/.local/bin/fd"
+    state: link
+    force: true
