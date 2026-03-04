@@ -34,6 +34,7 @@ ensure_cmd_path deno "$deno_install_root/bin"
 
 check_cmd deno
 check_cmd ni
+check_cmd vercel
 check_cmd java
 
 android_sdk_root="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/.android/sdk}}"
@@ -48,6 +49,7 @@ bun --version || true
 fnm --version || true
 deno --version || true
 ni --version || true
+vercel --version || true
 java -version || true
 adb version || true
 
