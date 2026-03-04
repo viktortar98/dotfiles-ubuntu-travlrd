@@ -11,17 +11,33 @@ check_cmd() {
   fi
 }
 
+ensure_cmd_path() {
+  local cmd="$1"
+  local dir="$2"
+
+  if command -v "$cmd" >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if [ -n "$dir" ] && [ -x "$dir/$cmd" ]; then
+    export PATH="$dir:$PATH"
+  fi
+}
+
 check_cmd git
 check_cmd rg
 check_cmd bun
 check_cmd fnm
+
+deno_install_root="${DENO_INSTALL:-$HOME/.deno}"
+ensure_cmd_path deno "$deno_install_root/bin"
+
 check_cmd deno
 check_cmd ni
 check_cmd java
 
-if ! command -v adb >/dev/null 2>&1 && [ -x "$HOME/.android/sdk/platform-tools/adb" ]; then
-  export PATH="$HOME/.android/sdk/platform-tools:$PATH"
-fi
+android_sdk_root="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/.android/sdk}}"
+ensure_cmd_path adb "$android_sdk_root/platform-tools"
 
 check_cmd adb
 
@@ -42,6 +58,10 @@ if command -v fnm >/dev/null 2>&1; then
 fi
 
 if command -v adb >/dev/null 2>&1; then
-  printf '\nConnected Android devices:\n'
-  adb devices || true
+  printf '\nAndroid devices:\n'
+  if command -v pgrep >/dev/null 2>&1 && pgrep -x adb >/dev/null 2>&1; then
+    adb devices -l || true
+  else
+    printf 'adb daemon not running; run `adb devices -l` manually when needed\n'
+  fi
 fi
