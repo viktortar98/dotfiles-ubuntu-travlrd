@@ -47,3 +47,4 @@ This file is the policy contract for AI agents editing this repo.
 5. Re-run to confirm idempotence.
 6. Update docs when policy or default behavior changes.
 7. Commit changes with a descriptive message and push to remote.
+8. Ensure git state is clean when finished; commit any existing uncommitted changes.
