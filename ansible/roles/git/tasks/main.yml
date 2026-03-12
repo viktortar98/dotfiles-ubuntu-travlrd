@@ -24,3 +24,9 @@
     value: "{{ git_user_email }}"
     scope: global
   when: git_user_email | length > 0
+
+- name: Set git core.autocrlf to input
+  ansible.builtin.git_config:
+    name: core.autocrlf
+    value: input
+    scope: global
