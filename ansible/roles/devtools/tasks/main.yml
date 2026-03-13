@@ -1,0 +1,14 @@
+---
+- name: Ensure local bin directory exists
+  ansible.builtin.file:
+    path: "{{ dotfiles_home }}/.local/bin"
+    state: directory
+    mode: "0755"
+
+- name: Install Claude CLI
+  ansible.builtin.shell: |
+    set -euo pipefail
+    curl -fsSL https://claude.ai/install.sh | bash
+  args:
+    executable: /bin/bash
+    creates: "{{ dotfiles_home }}/.local/bin/claude"

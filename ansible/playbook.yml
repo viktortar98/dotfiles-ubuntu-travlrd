@@ -9,6 +9,7 @@
     - role: shell
     - role: git
     - role: nodejs
+    - role: devtools
     - role: editors
     - role: android
     - role: wsl

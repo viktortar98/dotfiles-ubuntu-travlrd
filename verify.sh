@@ -45,6 +45,7 @@ check_cmd ni
 check_cmd vercel
 check_cmd micro
 check_cmd java
+check_cmd claude
 
 android_sdk_root="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/.android/sdk}}"
 ensure_cmd_path adb "$android_sdk_root/platform-tools"
@@ -71,6 +72,7 @@ ni --version || true
 vercel --version || true
 micro --version || true
 java -version || true
+claude --version || true
 adb version || true
 sdkmanager --version || true
 

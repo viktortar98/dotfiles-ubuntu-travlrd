@@ -50,6 +50,7 @@ node_lts: "lts"
 bun_version: "1.2.21"
 pnpm_version: "10.17.0"
 deno_version: "2.2.6"
+claude_version: "latest"
 
 android_sdk_root: "{{ dotfiles_home }}/.android/sdk"
 android_cmdline_tools_version: "13114758"
