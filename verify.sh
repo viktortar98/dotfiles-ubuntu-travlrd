@@ -54,6 +54,53 @@ ensure_cmd_path sdkmanager "$android_sdk_root/cmdline-tools/latest/bin"
 check_cmd adb
 check_cmd sdkmanager
 
+check_symlink() {
+  local path="$1"
+  local expected="$2"
+
+  if [ -L "$path" ] && [ "$(readlink "$path")" = "$expected" ]; then
+    printf '[ok] symlink %s -> %s\n' "$path" "$expected"
+  else
+    printf '[missing] symlink %s -> %s\n' "$path" "$expected"
+    return 1
+  fi
+}
+
+check_file() {
+  local path="$1"
+
+  if [ -f "$path" ]; then
+    printf '[ok] file %s\n' "$path"
+  else
+    printf '[missing] file %s\n' "$path"
+    return 1
+  fi
+}
+
+check_contains_line() {
+  local path="$1"
+  local pattern="$2"
+
+  if [ -f "$path" ] && rg -qx --fixed-strings "$pattern" "$path" >/dev/null 2>&1; then
+    printf '[ok] %s contains %s\n' "$path" "$pattern"
+  else
+    printf '[missing] %s contains %s\n' "$path" "$pattern"
+    return 1
+  fi
+}
+
+check_file "$HOME/.agents/AGENTS.md"
+check_file "$HOME/.agents/workflows/plan-build.md"
+check_file "$HOME/templates/AGENTS.md"
+check_file "$HOME/templates/AGENTS.local.md"
+check_file "$HOME/.gitignore_global"
+
+check_symlink "$HOME/.claude/CLAUDE.md" "$HOME/.agents/AGENTS.md"
+check_symlink "$HOME/.config/opencode/AGENTS.md" "$HOME/.agents/AGENTS.md"
+check_symlink "$HOME/.codex/AGENTS.md" "$HOME/.agents/AGENTS.md"
+
+check_contains_line "$HOME/.gitignore_global" "AGENTS.local.md"
+
 printf '\nVersions:\n'
 git --version || true
 rg --version || true
@@ -75,6 +122,9 @@ java -version || true
 claude --version || true
 adb version || true
 sdkmanager --version || true
+
+printf '\nGit config:\n'
+git config --global --get core.excludesfile || true
 
 if command -v fnm >/dev/null 2>&1; then
   printf '\nNode runtime (fnm):\n'

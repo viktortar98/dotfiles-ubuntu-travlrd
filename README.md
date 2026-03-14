@@ -36,6 +36,7 @@ cd ~/dotfiles
 - **Android SDK**: Command-line tools + platform-tools (no emulator)
 - **OpenJDK 17**: For Android development
 - **Git + gh**: Version control and GitHub CLI
+- **Global agent workflow config**: Shared `~/.agents` rules, workflow overlays, tool symlinks, and project templates
 
 ### Utility scripts
 - **clone-org-repos**: Clone all repos from a GitHub organization
@@ -51,6 +52,8 @@ cd ~/dotfiles
 ### Project structure
 - `~/gh/`: Projects cloned from GitHub
 - `~/dotfiles/`: This repository
+- `~/.agents/`: Global AI workflow rules and opt-in workflows
+- `~/templates/`: Starter `AGENTS.md` and `AGENTS.local.md` templates
 
 ## Configuration
 

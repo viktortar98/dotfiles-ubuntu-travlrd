@@ -12,6 +12,7 @@
 3. Run `./bootstrap.sh`.
 4. Restart shell.
 5. Run `./verify.sh`.
+6. Confirm `~/.agents/AGENTS.md` and `~/templates/AGENTS.md` exist if you use AI coding tools.
 
 ## Native Ubuntu desktop flow
 
@@ -20,6 +21,7 @@
 3. Run `./bootstrap.sh`.
 4. Restart shell.
 5. Run `./verify.sh`.
+6. Confirm `~/.agents/AGENTS.md` and `~/templates/AGENTS.md` exist if you use AI coding tools.
 
 ## Android device debugging in WSL
 

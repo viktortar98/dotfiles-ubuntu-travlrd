@@ -1,1 +1,12 @@
 ---
+agents_home: "{{ dotfiles_home }}/.agents"
+agents_templates_home: "{{ dotfiles_home }}/templates"
+agents_global_md: "{{ agents_home }}/AGENTS.md"
+
+agents_tool_links:
+  - path: "{{ dotfiles_home }}/.claude/CLAUDE.md"
+    parent: "{{ dotfiles_home }}/.claude"
+  - path: "{{ dotfiles_home }}/.config/opencode/AGENTS.md"
+    parent: "{{ dotfiles_home }}/.config/opencode"
+  - path: "{{ dotfiles_home }}/.codex/AGENTS.md"
+    parent: "{{ dotfiles_home }}/.codex"

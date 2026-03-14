@@ -30,3 +30,18 @@
     name: core.autocrlf
     value: input
     scope: global
+
+- name: Add AGENTS.local.md to global gitignore
+  ansible.builtin.blockinfile:
+    path: "{{ dotfiles_home }}/.gitignore_global"
+    create: true
+    mode: "0644"
+    marker: "# {mark} dotfiles AGENTS.local"
+    block: |
+      AGENTS.local.md
+
+- name: Set git core.excludesfile
+  ansible.builtin.git_config:
+    name: core.excludesfile
+    value: "{{ dotfiles_home }}/.gitignore_global"
+    scope: global

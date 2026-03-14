@@ -1,12 +1,82 @@
 ---
 - name: Ensure .agents directory exists
   ansible.builtin.file:
-    path: "{{ dotfiles_home }}/.agents"
+    path: "{{ agents_home }}"
+    state: directory
+    mode: "0755"
+
+- name: Ensure .agents workflows directory exists
+  ansible.builtin.file:
+    path: "{{ agents_home }}/workflows"
+    state: directory
+    mode: "0755"
+
+- name: Ensure templates directory exists
+  ansible.builtin.file:
+    path: "{{ agents_templates_home }}"
     state: directory
     mode: "0755"
 
 - name: Copy safe baseline agent config
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../config/agents/base-config.toml"
-    dest: "{{ dotfiles_home }}/.agents/base-config.toml"
+    dest: "{{ agents_home }}/base-config.toml"
     mode: "0644"
+
+- name: Copy global agent rules
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../config/agents/AGENTS.md"
+    dest: "{{ agents_global_md }}"
+    mode: "0644"
+
+- name: Copy plan-build workflow
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../config/agents/workflows/plan-build.md"
+    dest: "{{ agents_home }}/workflows/plan-build.md"
+    mode: "0644"
+
+- name: Copy project AGENTS template
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../config/agents/templates/AGENTS.md"
+    dest: "{{ agents_templates_home }}/AGENTS.md"
+    mode: "0644"
+
+- name: Copy local AGENTS template
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../config/agents/templates/AGENTS.local.md"
+    dest: "{{ agents_templates_home }}/AGENTS.local.md"
+    mode: "0644"
+
+- name: Ensure tool config parent directories exist
+  ansible.builtin.file:
+    path: "{{ item.parent }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ agents_tool_links }}"
+
+- name: Gather tool config target status
+  ansible.builtin.stat:
+    path: "{{ item.path }}"
+    follow: false
+  loop: "{{ agents_tool_links }}"
+  register: agents_tool_link_stats
+
+- name: Back up existing non-symlink tool config files
+  ansible.builtin.command:
+    argv:
+      - mv
+      - "{{ item.stat.path }}"
+      - "{{ item.stat.path }}.bak.{{ ansible_date_time.iso8601_basic_short }}"
+  loop: "{{ agents_tool_link_stats.results }}"
+  when:
+    - item.stat.exists
+    - not item.stat.islnk | default(false)
+  changed_when: true
+
+- name: Symlink global AGENTS file into tool configs
+  ansible.builtin.file:
+    src: "{{ agents_global_md }}"
+    dest: "{{ item.path }}"
+    state: link
+    force: true
+  loop: "{{ agents_tool_links }}"
