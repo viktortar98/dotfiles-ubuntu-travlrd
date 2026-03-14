@@ -7,7 +7,19 @@
 
 - name: Ensure .agents workflows directory exists
   ansible.builtin.file:
-    path: "{{ agents_home }}/workflows"
+    path: "{{ agents_workflows_home }}"
+    state: directory
+    mode: "0755"
+
+- name: Ensure .agents prompts directory exists
+  ansible.builtin.file:
+    path: "{{ agents_prompts_home }}"
+    state: directory
+    mode: "0755"
+
+- name: Ensure .agents templates directory exists
+  ansible.builtin.file:
+    path: "{{ agents_workflow_templates_home }}"
     state: directory
     mode: "0755"
 
@@ -29,23 +41,33 @@
     dest: "{{ agents_global_md }}"
     mode: "0644"
 
-- name: Copy plan-build workflow
+- name: Copy managed workflows
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../config/agents/workflows/plan-build.md"
-    dest: "{{ agents_home }}/workflows/plan-build.md"
+    src: "{{ playbook_dir }}/../config/agents/workflows/{{ item }}"
+    dest: "{{ agents_workflows_home }}/{{ item }}"
     mode: "0644"
+  loop: "{{ agents_workflow_files }}"
 
-- name: Copy project AGENTS template
+- name: Copy managed prompts
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../config/agents/templates/AGENTS.md"
-    dest: "{{ agents_templates_home }}/AGENTS.md"
+    src: "{{ playbook_dir }}/../config/agents/prompts/{{ item }}"
+    dest: "{{ agents_prompts_home }}/{{ item }}"
     mode: "0644"
+  loop: "{{ agents_prompt_files }}"
 
-- name: Copy local AGENTS template
+- name: Copy managed workflow templates
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../config/agents/templates/AGENTS.local.md"
-    dest: "{{ agents_templates_home }}/AGENTS.local.md"
+    src: "{{ playbook_dir }}/../config/agents/workflow-templates/{{ item }}"
+    dest: "{{ agents_workflow_templates_home }}/{{ item }}"
     mode: "0644"
+  loop: "{{ agents_workflow_template_files }}"
+
+- name: Copy project AGENTS templates
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../config/agents/templates/{{ item }}"
+    dest: "{{ agents_templates_home }}/{{ item }}"
+    mode: "0644"
+  loop: "{{ agents_project_template_files }}"
 
 - name: Ensure tool config parent directories exist
   ansible.builtin.file:

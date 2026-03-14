@@ -92,6 +92,10 @@ check_contains_line() {
 
 check_file "$HOME/.agents/AGENTS.md"
 check_file "$HOME/.agents/workflows/plan-build.md"
+check_file "$HOME/.agents/workflows/incremental-audit.md"
+check_file "$HOME/.agents/prompts/project-derived-incremental-audit.md"
+check_file "$HOME/.agents/templates/vertical-slice-overview-template.md"
+check_file "$HOME/.agents/templates/problem-log-template.md"
 check_file "$HOME/templates/AGENTS.md"
 check_file "$HOME/templates/AGENTS.local.md"
 check_file "$HOME/.gitignore_global"
