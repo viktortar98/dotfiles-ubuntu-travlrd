@@ -36,10 +36,18 @@ This file is the policy contract for AI agents editing this repo.
 - `bootstrap.sh` must remain the fresh-machine entrypoint.
 - `bootstrap.sh` installs required dependencies itself.
 - `verify.sh` validates critical tooling and expected environment state.
+- For repo-managed config, the default expectation is end-to-end execution in one turn: update the tracked source, deploy it to the current machine when applicable, verify it, and commit the result unless the user explicitly narrows scope.
 - When adding a new tool: update Ansible role AND `verify.sh`.
 - When modifying WSL config files (e.g., `.wslconfig`), copy the updated file to the Windows user home directory after changes.
 - Run `./bootstrap.sh` after making changes that affect it. Since sudo may be required, ask the user to run it for you.
 - Run `./verify.sh` to confirm tools are installed correctly.
+
+## Request Interpretation
+
+- If the user asks to correct or improve a tracked policy, workflow, template, or config file in this repo, treat that as a request to update the file in the repo source of truth, not just to discuss wording, unless the user clearly says they only want a draft or review.
+- Do not stop at proposing text when the repo-managed artifact can be updated safely in the same turn.
+- If a change affects a file that is deployed from this repo into the current machine, deploy the updated file after editing the tracked source unless the user says not to.
+- If the user points out missed follow-through, treat that as an immediate instruction to complete the omitted execution steps, not as a request for explanation only.
 
 ## Agent Workflow
 
