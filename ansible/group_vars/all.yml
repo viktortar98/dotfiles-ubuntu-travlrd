@@ -5,6 +5,7 @@ dotfiles_home: "{{ lookup('env', 'HOME') }}"
 apt_packages_base:
   - ca-certificates
   - curl
+  - gh
   - git
   - pipx
   - python3-pip

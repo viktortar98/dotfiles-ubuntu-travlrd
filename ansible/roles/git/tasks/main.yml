@@ -8,7 +8,7 @@
 - name: Set git credential helper to gh
   ansible.builtin.git_config:
     name: credential.helper
-    value: "!/usr/bin/gh auth git-credential"
+    value: "!/usr/bin/env gh auth git-credential"
     scope: global
 
 - name: Set git user name when provided

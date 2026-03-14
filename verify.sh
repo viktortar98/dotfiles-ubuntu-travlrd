@@ -33,6 +33,7 @@ check_cmd fd
 check_cmd jq
 check_cmd tldr
 check_cmd htop
+check_cmd gh
 check_cmd bun
 check_cmd fnm
 check_cmd pnpm
@@ -111,6 +112,7 @@ fd --version || true
 jq --version || true
 tldr --version || true
 htop --version || true
+gh --version || true
 bun --version || true
 fnm --version || true
 pnpm --version || true
