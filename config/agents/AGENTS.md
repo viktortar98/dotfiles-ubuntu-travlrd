@@ -25,9 +25,11 @@ Read `AGENTS.local.md` at the start of every session if it exists.
 
 ---
 
-## Available Workflows
+## Workflow Index
+
+Maintain this index when workflows are added, renamed, or removed.
 
 Workflows are opt-in. Only follow one if the user explicitly invokes it by name.
 
-- **plan-build** -- Structured planning and implementation with recursive decomposition and user approval gates. Defined in `~/.agents/workflows/plan-build.md`.
 - **incremental-audit** -- Iterative, project-derived audit that surfaces small batches of problem classes, logs outcomes, and hands approved issues to `plan-build`. Defined in `~/.agents/workflows/incremental-audit.md`.
+- **plan-build** -- Structured planning and implementation with recursive decomposition and user approval gates. Defined in `~/.agents/workflows/plan-build.md`.
