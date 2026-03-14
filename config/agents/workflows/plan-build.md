@@ -18,6 +18,8 @@ Present the plan one level at a time, starting at the top level. For each plan i
 
 Always surface for user decision: architecture, UX approach, technology choices, and any workaround, regardless of reason.
 
+Answer the user before doing plan-file bookkeeping. Do not make the user wait for `plans/` file writes before they can read the plan or the approval request. If the environment supports background work after sending the response, write the file then. If it does not, defer the file update to the next turn rather than delaying the response.
+
 Write each approved branch immediately to a new file in `plans/`. For each decision, record: what was decided, what alternatives were rejected, and why. Update `plans/index.md` with a one-line summary of the new file.
 
 When planning is complete, explicitly hand off to Builder mindset.
