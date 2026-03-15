@@ -4,6 +4,7 @@ dotfiles_home: "{{ lookup('env', 'HOME') }}"
 
 apt_packages_base:
   - ca-certificates
+  - bind9-dnsutils
   - curl
   - gh
   - git

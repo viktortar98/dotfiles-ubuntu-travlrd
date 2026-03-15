@@ -31,6 +31,8 @@ check_cmd fzf
 check_cmd bat
 check_cmd fd
 check_cmd jq
+check_cmd nslookup
+check_cmd dig
 check_cmd tldr
 check_cmd htop
 check_cmd gh
@@ -115,6 +117,8 @@ fzf --version || true
 bat --version || true
 fd --version || true
 jq --version || true
+nslookup -version || true
+dig -v || true
 tldr --version || true
 htop --version || true
 gh --version || true
