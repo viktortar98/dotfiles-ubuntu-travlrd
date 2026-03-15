@@ -1,15 +1,15 @@
-# Project-Derived Incremental Audit Prompt
+# Project-Derived Audit Prompt
 
 Use this prompt when starting an incremental codebase quality audit.
 
 ```text
 Run an incremental, project-derived audit of this codebase.
 
-Use the `incremental-audit` workflow from `~/.agents/workflows/incremental-audit.md`.
+Use the `audit` protocol from `~/.agents/protocols/audit.md`.
 
 Do not run a giant one-shot audit. Do not start by producing a full implementation plan.
 
-Your job is to discover meaningful problem classes in small related batches, stop for user decision, and then switch directly into the `plan-build` Planner phase with the current findings batch as the initial plan.
+Your job is to discover meaningful problem classes in small related batches, stop for user decision, and then switch directly into the `negotiate` protocol with the current findings batch as the initial plan.
 
 Core stance:
 - use first-principles discovery
@@ -27,7 +27,7 @@ Process:
    - then most product-critical vertical slices
    - then more localized concerns
 4. Surface a small related batch of roughly 3-6 problem classes.
-5. Stop for user decision after each batch, then switch into the `plan-build` Planner phase.
+5. Stop for user decision after each batch, then switch into the `negotiate` protocol.
 6. Treat the current findings batch as the initial plan. Do not generate a separate remediation prompt first.
 7. Log every surfaced problem class and its outcome.
 8. Consult the problem log before surfacing something as new. Use `~/.agents/templates/problem-log-template.md` as the starter shape if the repo does not already have a committed log.
@@ -87,7 +87,7 @@ Audit constraints:
 - stay open to project-derived dimensions outside the prewritten categories
 - omission from the prompt does not imply lower importance
 
-When switching into `plan-build` planning, carry each finding forward as a top-level plan item with:
+When switching into `negotiate`, carry each finding forward as a top-level plan item with:
 - problem-class title
 - why it matters
 - violated principle
@@ -96,7 +96,7 @@ When switching into `plan-build` planning, carry each finding forward as a top-l
 - audit recommendation
 - explicit note if the issue is questionable or context-sensitive
 
-The planning phase that follows the audit must:
+The negotiation phase that follows the audit must:
 - find and address all instances of the problem class within the agreed scope
 - not just fix the examples from the audit
 - challenge the recommendation if the class turns out to be over-broad, mis-scoped, or premature

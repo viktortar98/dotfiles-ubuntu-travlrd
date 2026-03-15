@@ -26,11 +26,12 @@ Read `AGENTS.local.md` at the start of every session if it exists.
 
 ---
 
-## Workflow Index
+## Protocol Index
 
-Maintain this index when workflows are added, renamed, or removed.
+Maintain this index when protocols are added, renamed, or removed.
 
-Workflows are opt-in. Only follow one if the user explicitly invokes it by name.
+Protocols are opt-in. Only follow one if the user explicitly invokes it by name.
 
-- **incremental-audit** -- Iterative, project-derived audit that surfaces small batches of problem classes, logs outcomes, and hands the findings batch directly into `plan-build` planning. Defined in `~/.agents/workflows/incremental-audit.md`.
-- **plan-build** -- Structured planning and implementation with recursive decomposition and user approval gates. Defined in `~/.agents/workflows/plan-build.md`.
+- **audit** -- Iterative, project-derived review and analysis that surfaces small batches of problem classes, logs outcomes, and hands the findings batch directly into `negotiate`. Defined in `~/.agents/protocols/audit.md`.
+- **negotiate** -- Structured planning, decomposition, and user approval with recursive refinement and plan finalization gates. Defined in `~/.agents/protocols/negotiate.md`.
+- **execute** -- Plan-constrained implementation that follows an approved plan without drifting from the recorded decisions. Defined in `~/.agents/protocols/execute.md`.

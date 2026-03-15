@@ -1,6 +1,6 @@
 # Project Agent Guide
 
-Follow `~/.agents/AGENTS.md` for global hard rules and the list of available opt-in workflows.
+Follow `~/.agents/AGENTS.md` for global hard rules and the list of available opt-in protocols.
 
 ## Project-Wide Rules
 

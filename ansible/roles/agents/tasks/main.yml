@@ -5,9 +5,9 @@
     state: directory
     mode: "0755"
 
-- name: Ensure .agents workflows directory exists
+- name: Ensure .agents protocols directory exists
   ansible.builtin.file:
-    path: "{{ agents_workflows_home }}"
+    path: "{{ agents_protocols_home }}"
     state: directory
     mode: "0755"
 
@@ -19,7 +19,7 @@
 
 - name: Ensure .agents templates directory exists
   ansible.builtin.file:
-    path: "{{ agents_workflow_templates_home }}"
+    path: "{{ agents_protocol_templates_home }}"
     state: directory
     mode: "0755"
 
@@ -41,12 +41,12 @@
     dest: "{{ agents_global_md }}"
     mode: "0644"
 
-- name: Copy managed workflows
+- name: Copy managed protocols
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../config/agents/workflows/{{ item }}"
-    dest: "{{ agents_workflows_home }}/{{ item }}"
+    src: "{{ playbook_dir }}/../config/agents/protocols/{{ item }}"
+    dest: "{{ agents_protocols_home }}/{{ item }}"
     mode: "0644"
-  loop: "{{ agents_workflow_files }}"
+  loop: "{{ agents_protocol_files }}"
 
 - name: Copy managed prompts
   ansible.builtin.copy:
@@ -55,12 +55,21 @@
     mode: "0644"
   loop: "{{ agents_prompt_files }}"
 
-- name: Copy managed workflow templates
+- name: Copy managed protocol templates
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../config/agents/workflow-templates/{{ item }}"
-    dest: "{{ agents_workflow_templates_home }}/{{ item }}"
+    src: "{{ playbook_dir }}/../config/agents/protocol-templates/{{ item }}"
+    dest: "{{ agents_protocol_templates_home }}/{{ item }}"
     mode: "0644"
-  loop: "{{ agents_workflow_template_files }}"
+  loop: "{{ agents_protocol_template_files }}"
+
+- name: Remove obsolete managed workflow files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ agents_home }}/workflows/plan-build.md"
+    - "{{ agents_home }}/workflows/incremental-audit.md"
+    - "{{ agents_prompts_home }}/project-derived-incremental-audit.md"
 
 - name: Copy project AGENTS templates
   ansible.builtin.copy:

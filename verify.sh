@@ -91,9 +91,10 @@ check_contains_line() {
 }
 
 check_file "$HOME/.agents/AGENTS.md"
-check_file "$HOME/.agents/workflows/plan-build.md"
-check_file "$HOME/.agents/workflows/incremental-audit.md"
-check_file "$HOME/.agents/prompts/project-derived-incremental-audit.md"
+check_file "$HOME/.agents/protocols/audit.md"
+check_file "$HOME/.agents/protocols/negotiate.md"
+check_file "$HOME/.agents/protocols/execute.md"
+check_file "$HOME/.agents/prompts/project-derived-audit.md"
 check_file "$HOME/.agents/templates/vertical-slice-overview-template.md"
 check_file "$HOME/.agents/templates/problem-log-template.md"
 check_file "$HOME/templates/AGENTS.md"

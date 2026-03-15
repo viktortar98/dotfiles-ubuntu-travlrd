@@ -2,18 +2,19 @@
 agents_home: "{{ dotfiles_home }}/.agents"
 agents_templates_home: "{{ dotfiles_home }}/templates"
 agents_global_md: "{{ agents_home }}/AGENTS.md"
-agents_workflows_home: "{{ agents_home }}/workflows"
+agents_protocols_home: "{{ agents_home }}/protocols"
 agents_prompts_home: "{{ agents_home }}/prompts"
-agents_workflow_templates_home: "{{ agents_home }}/templates"
+agents_protocol_templates_home: "{{ agents_home }}/templates"
 
-agents_workflow_files:
-  - plan-build.md
-  - incremental-audit.md
+agents_protocol_files:
+  - audit.md
+  - negotiate.md
+  - execute.md
 
 agents_prompt_files:
-  - project-derived-incremental-audit.md
+  - project-derived-audit.md
 
-agents_workflow_template_files:
+agents_protocol_template_files:
   - vertical-slice-overview-template.md
   - problem-log-template.md
 

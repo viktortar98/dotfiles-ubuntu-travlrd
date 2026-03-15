@@ -1,20 +1,20 @@
-# incremental-audit Workflow
+# audit Protocol
 
-Use this workflow only when the user explicitly invokes `incremental-audit`.
+Use this protocol only when the user explicitly invokes `audit`.
 
-Supporting artifacts installed with this workflow:
-- Prompt: `~/.agents/prompts/project-derived-incremental-audit.md`
+Supporting artifacts installed with this protocol:
+- Prompt: `~/.agents/prompts/project-derived-audit.md`
 - Templates:
   - `~/.agents/templates/vertical-slice-overview-template.md`
   - `~/.agents/templates/problem-log-template.md`
 
 ## Purpose
 
-This workflow replaces a one-shot audit plus one-shot remediation plan with an iterative loop:
+This protocol replaces a one-shot audit plus one-shot remediation plan with an iterative loop:
 
 1. discover a small related batch of meaningful problem classes
 2. stop for user decision
-3. switch directly into the `plan-build` Planner phase, using the current findings batch as the initial plan
+3. switch directly into the `negotiate` protocol, using the current findings batch as the initial plan
 4. log every surfaced problem class and its outcome
 5. resume discovery from the next high-leverage unexplored area
 
@@ -49,7 +49,7 @@ The audit must not include:
 - detailed remediation design
 - example-only fix suggestions disguised as broad recommendations
 
-Implementation planning belongs in the `plan-build` planning phase that starts from the findings batch.
+Implementation planning belongs in the `negotiate` protocol that starts from the findings batch.
 
 ## Fixed core
 
@@ -115,7 +115,7 @@ This avoids both:
 - sample-only auditing
 - hidden giant audits
 
-Repo-wide completeness for a problem class belongs to the scoped `plan-build` work after the findings batch enters planning.
+Repo-wide completeness for a problem class belongs to the scoped `negotiate` and `execute` work after the findings batch enters negotiation.
 
 ## Vertical slice overview
 
@@ -171,9 +171,9 @@ Decision criteria should be based primarily on:
 
 Questionability means whether the issue unquestionably needs to be addressed now, versus being real but still context-sensitive or premature.
 
-## Plan-phase handoff
+## Negotiate handoff
 
-When a findings batch is presented, the workflow should immediately switch into the `plan-build` Planner phase.
+When a findings batch is presented, the protocol should immediately switch into the `negotiate` protocol.
 
 The initial plan is the list of findings from the current batch. Do not generate a separate remediation prompt beforehand.
 
@@ -190,17 +190,17 @@ Findings recommended `defer`, `ignore`, or `monitor` should remain explicit disp
 
 The prompt should not be pre-generated. It should emerge from the final approved plan.
 
-## Plan/build responsibility
+## Negotiate and execute responsibility
 
-Once the workflow has switched into `plan-build`, that planning/building work is responsible for:
+Once the protocol has switched into `negotiate`, that negotiation and later implementation work is responsible for:
 - finding and addressing all instances of the problem class within the agreed scope
 - not just fixing the examples from the audit
 
-The planning/building work may challenge the audit recommendation if the class turns out to be:
+The later protocol work may challenge the audit recommendation if the class turns out to be:
 - over-broad
 - mis-scoped
 - premature
 
-By default, full instance-finding belongs to the Builder phase.
+By default, full instance-finding belongs to the `execute` protocol.
 
-If the Planner sees meaningful risk that the fix should not be applied uniformly across all matching cases, the Planner should ask the user to decide before handing off.
+If `negotiate` sees meaningful risk that the fix should not be applied uniformly across all matching cases, the protocol should ask the user to decide before handing off.

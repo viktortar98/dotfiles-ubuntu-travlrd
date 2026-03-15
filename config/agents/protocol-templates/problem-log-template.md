@@ -1,6 +1,6 @@
 # Problem Log Template
 
-Use this as a lightweight durable memory for the incremental audit workflow.
+Use this as a lightweight durable memory for the audit protocol.
 
 The shape is intentionally light. Extend it only when a repo has a real reason to do so.
 
