@@ -2,6 +2,8 @@
 
 At the start of each session, the user will tell you which mindset to take: **Planner** or **Builder**. If no mindset is specified, take the **Planner** mindset.
 
+If another workflow explicitly hands off into a `plan-build` phase, follow that handoff. A findings list handed off from another workflow becomes the initial plan unless the user redirects it.
+
 ---
 
 ## Planner Mindset
@@ -13,6 +15,8 @@ Read the relevant files in `plans/` before starting. At the start of each sessio
 Map the codebase before planning. Understand the domain, and find existing utilities, types, and abstractions before proposing new ones.
 
 Gather context about the task -- ask about goals, constraints, and relevant context. Propose an initial interpretation if enough context is available. Where multiple viable options exist, present them as explicit choices rather than picking one silently.
+
+If the task arrives from `incremental-audit` or another upstream workflow with a findings list, treat that list as the top-level plan skeleton. Work through those findings with the user instead of asking the upstream workflow to generate a separate prompt artifact.
 
 Present the plan one level at a time, starting at the top level. For each plan item, require explicit user approval. Explicit approval means the item is decided and must not be decomposed further. Any user response that does not explicitly approve the item means the item is not approved yet; continue decomposing or clarifying it. Never infer approval from silence, acknowledgment, discussion, or implied agreement.
 

@@ -14,7 +14,7 @@ This workflow replaces a one-shot audit plus one-shot remediation plan with an i
 
 1. discover a small related batch of meaningful problem classes
 2. stop for user decision
-3. if a problem class should be addressed now, hand it off to a dedicated remediation `plan-build` session
+3. switch directly into the `plan-build` Planner phase, using the current findings batch as the initial plan
 4. log every surfaced problem class and its outcome
 5. resume discovery from the next high-leverage unexplored area
 
@@ -49,7 +49,7 @@ The audit must not include:
 - detailed remediation design
 - example-only fix suggestions disguised as broad recommendations
 
-Implementation planning belongs in the remediation `plan-build` session.
+Implementation planning belongs in the `plan-build` planning phase that starts from the findings batch.
 
 ## Fixed core
 
@@ -115,7 +115,7 @@ This avoids both:
 - sample-only auditing
 - hidden giant audits
 
-Repo-wide completeness for a problem class belongs to the dedicated remediation session when that problem is approved for action.
+Repo-wide completeness for a problem class belongs to the scoped `plan-build` work after the findings batch enters planning.
 
 ## Vertical slice overview
 
@@ -171,11 +171,13 @@ Decision criteria should be based primarily on:
 
 Questionability means whether the issue unquestionably needs to be addressed now, versus being real but still context-sensitive or premature.
 
-## Remediation handoff
+## Plan-phase handoff
 
-For each problem class recommended for action, the audit should emit a dedicated remediation `plan-build` prompt.
+When a findings batch is presented, the workflow should immediately switch into the `plan-build` Planner phase.
 
-That remediation prompt must carry forward:
+The initial plan is the list of findings from the current batch. Do not generate a separate remediation prompt beforehand.
+
+Each finding in that starting plan must carry forward:
 - problem-class title
 - why it matters
 - violated principle
@@ -184,17 +186,17 @@ That remediation prompt must carry forward:
 - recommendation from the audit
 - explicit note if the issue is questionable or context-sensitive
 
-If the recommendation is `defer`:
-- still log the problem class
-- do not emit a remediation prompt unless the user asks for one
+Findings recommended `defer`, `ignore`, or `monitor` should remain explicit disposition items in the plan until the user approves their outcome, but they should not be decomposed into implementation work unless the user promotes them.
 
-## Remediation session responsibility
+The prompt should not be pre-generated. It should emerge from the final approved plan.
 
-The remediation `plan-build` session is responsible for:
+## Plan/build responsibility
+
+Once the workflow has switched into `plan-build`, that planning/building work is responsible for:
 - finding and addressing all instances of the problem class within the agreed scope
 - not just fixing the examples from the audit
 
-The remediation session may challenge the audit recommendation if the class turns out to be:
+The planning/building work may challenge the audit recommendation if the class turns out to be:
 - over-broad
 - mis-scoped
 - premature

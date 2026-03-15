@@ -9,7 +9,7 @@ Use the `incremental-audit` workflow from `~/.agents/workflows/incremental-audit
 
 Do not run a giant one-shot audit. Do not start by producing a full implementation plan.
 
-Your job is to discover meaningful problem classes in small related batches, stop for user decision, and only hand off approved problem classes into dedicated remediation `plan-build` prompts.
+Your job is to discover meaningful problem classes in small related batches, stop for user decision, and then switch directly into the `plan-build` Planner phase with the current findings batch as the initial plan.
 
 Core stance:
 - use first-principles discovery
@@ -27,8 +27,8 @@ Process:
    - then most product-critical vertical slices
    - then more localized concerns
 4. Surface a small related batch of roughly 3-6 problem classes.
-5. Stop for user decision after each batch.
-6. For each problem class recommended for action, emit a dedicated remediation `plan-build` prompt.
+5. Stop for user decision after each batch, then switch into the `plan-build` Planner phase.
+6. Treat the current findings batch as the initial plan. Do not generate a separate remediation prompt first.
 7. Log every surfaced problem class and its outcome.
 8. Consult the problem log before surfacing something as new. Use `~/.agents/templates/problem-log-template.md` as the starter shape if the repo does not already have a committed log.
 
@@ -82,12 +82,12 @@ Completeness expectation:
 
 Audit constraints:
 - do not include implementation plans in the audit batch
-- do not emit a remediation prompt for deferred issues unless asked
+- do not prewrite the later plan or generate a remediation prompt artifact
 - if a strongly recommended dimension is omitted, say why
 - stay open to project-derived dimensions outside the prewritten categories
 - omission from the prompt does not imply lower importance
 
-For each problem class recommended for action, emit a dedicated remediation `plan-build` prompt that carries forward:
+When switching into `plan-build` planning, carry each finding forward as a top-level plan item with:
 - problem-class title
 - why it matters
 - violated principle
@@ -96,8 +96,9 @@ For each problem class recommended for action, emit a dedicated remediation `pla
 - audit recommendation
 - explicit note if the issue is questionable or context-sensitive
 
-The remediation `plan-build` prompt must instruct the later session to:
+The planning phase that follows the audit must:
 - find and address all instances of the problem class within the agreed scope
 - not just fix the examples from the audit
 - challenge the recommendation if the class turns out to be over-broad, mis-scoped, or premature
+- keep `defer`, `ignore`, and `monitor` findings as explicit disposition items until the user approves them
 ```
