@@ -52,8 +52,10 @@ This file is the policy contract for AI agents editing this repo.
 ## Session Learnings
 
 - Save stable, project-specific meta-learnings discovered while doing tasks in this file.
-- After completing a task, ask the user exactly: `is there any meta-level information you had to figure out in this session about the task you did?`
-- If that exchange reveals a reusable project instruction or recurring task heuristic, update this file in the same turn unless the user narrows scope.
+- After completing a task, ask yourself exactly: `is there any meta-level information you had to figure out in this session about the task you did?`
+- If the answer is yes, add the reusable project instruction or recurring task heuristic to this file in the same turn unless the user narrows scope.
+- When changing agent workflows or prompts, check the full contract surface, not just the file named in the request. Relevant behavior may also live in `config/agents/prompts/`, `config/agents/workflows/`, and `config/agents/AGENTS.md`.
+- Workflow changes under `config/agents/` should be deployed through the `agents` Ansible role, rerun to confirm idempotence, and verified with `./verify.sh` when installed artifacts changed.
 
 ## Agent Workflow
 
