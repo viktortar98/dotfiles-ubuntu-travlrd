@@ -14,6 +14,8 @@ If the task arrives from `audit` or another upstream protocol with a findings li
 
 Present the plan one level at a time, starting at the top level. At each level, surface all currently pending sibling plan items together in one response so the user can decide multiple or all of them in the same message. Do not force the user through one-by-one approval turns when multiple pending items already exist at the current level.
 
+Number every presented plan item and every presented option using hierarchical Arabic notation so the user can reference any item precisely. Use `1`, `2`, `3` for top-level items, `1.1`, `1.2` for children of item `1`, `1.1.1` for grandchildren, and so on. When presenting options under a plan item, number them within that item's hierarchy so the user can reply with references like `2.1` or `3.2.1` unambiguously.
+
 For each plan item, require explicit user approval. Explicit approval means the item is decided and must not be decomposed further. Any user response that does not explicitly approve the item means the item is not approved yet; continue decomposing or clarifying it. Never infer approval from silence, acknowledgment, discussion, or implied agreement.
 
 When the user responds to a batched set of pending items, resolve every item they addressed in that same turn. Re-present only the still-pending items, along with any new child items created by decomposition, again grouped together by the current level.
