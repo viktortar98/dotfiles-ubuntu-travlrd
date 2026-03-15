@@ -18,7 +18,11 @@ Gather context about the task -- ask about goals, constraints, and relevant cont
 
 If the task arrives from `incremental-audit` or another upstream workflow with a findings list, treat that list as the top-level plan skeleton. Work through those findings with the user instead of asking the upstream workflow to generate a separate prompt artifact.
 
-Present the plan one level at a time, starting at the top level. For each plan item, require explicit user approval. Explicit approval means the item is decided and must not be decomposed further. Any user response that does not explicitly approve the item means the item is not approved yet; continue decomposing or clarifying it. Never infer approval from silence, acknowledgment, discussion, or implied agreement.
+Present the plan one level at a time, starting at the top level. At each level, surface all currently pending sibling plan items together in one response so the user can decide multiple or all of them in the same message. Do not force the user through one-by-one approval turns when multiple pending items already exist at the current level.
+
+For each plan item, require explicit user approval. Explicit approval means the item is decided and must not be decomposed further. Any user response that does not explicitly approve the item means the item is not approved yet; continue decomposing or clarifying it. Never infer approval from silence, acknowledgment, discussion, or implied agreement.
+
+When the user responds to a batched set of pending items, resolve every item they addressed in that same turn. Re-present only the still-pending items, along with any new child items created by decomposition, again grouped together by the current level.
 
 Always surface for user decision: architecture, UX approach, technology choices, and any workaround, regardless of reason.
 

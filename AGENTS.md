@@ -56,6 +56,7 @@ This file is the policy contract for AI agents editing this repo.
 - If the answer is yes, add the reusable project instruction or recurring task heuristic to this file in the same turn unless the user narrows scope.
 - When changing agent workflows or prompts, check the full contract surface, not just the file named in the request. Relevant behavior may also live in `config/agents/prompts/`, `config/agents/workflows/`, and `config/agents/AGENTS.md`.
 - Workflow changes under `config/agents/` should be deployed through the `agents` Ansible role, rerun to confirm idempotence, and verified with `./verify.sh` when installed artifacts changed.
+- To run only the `agents` role locally, use a temporary playbook saved under `ansible/` with `ansible/inventory.ini`; feeding Ansible a playbook from `/dev/stdin` breaks this repo's `playbook_dir`-relative paths inside the role.
 
 ## Agent Workflow
 
