@@ -49,6 +49,12 @@ This file is the policy contract for AI agents editing this repo.
 - If a change affects a file that is deployed from this repo into the current machine, deploy the updated file after editing the tracked source unless the user says not to.
 - If the user points out missed follow-through, treat that as an immediate instruction to complete the omitted execution steps, not as a request for explanation only.
 
+## Session Learnings
+
+- Save stable, project-specific meta-learnings discovered while doing tasks in this file.
+- After completing a task, ask the user exactly: `is there any meta-level information you had to figure out in this session about the task you did?`
+- If that exchange reveals a reusable project instruction or recurring task heuristic, update this file in the same turn unless the user narrows scope.
+
 ## Agent Workflow
 
 1. Always run `git pull` before making any changes to ensure you have the latest state.
